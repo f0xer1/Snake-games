@@ -18,7 +18,7 @@ for (let i = 0; i < excel.length; i++) {
         y--;
     }
     excel[i].setAttribute('posX', x);
-    excel[i].setAttribute('posY', y);
+    excel[i].setAttribute('posY', y.toString());
     x++;
 }
 
@@ -28,10 +28,10 @@ function generatesSnake() {
     return [posX, posY];
 }
 
-let coondinates = generatesSnake();
-let snakeBody = [document.querySelector('[posX = "' + coondinates[0] + '"][posY = "' + coondinates[1] + '"]'),
-document.querySelector('[posX = "' + (coondinates[0] - 1) + '"][posY = "' + coondinates[1] + '"]'),
-document.querySelector('[posX = "' + (coondinates[0] - 2) + '"][posY = "' + coondinates[1] + '"]')];
+let coordinates = generatesSnake();
+let snakeBody = [document.querySelector('[posX = "' + coordinates[0] + '"][posY = "' + coordinates[1] + '"]'),
+document.querySelector('[posX = "' + (coordinates[0] - 1) + '"][posY = "' + coordinates[1] + '"]'),
+document.querySelector('[posX = "' + (coordinates[0] - 2) + '"][posY = "' + coordinates[1] + '"]')];
 
 for (let i = 0; i < snakeBody.length; i++) {
     snakeBody[i].classList.add('snakeBody');
@@ -46,13 +46,13 @@ function createMouse() {
         let posY = Math.round(Math.random() * (10 - 1) + 1);
         return [posX, posY];
     }
-    let mouseCoondinates = generatesMouse();
-    console.log(mouseCoondinates);
-    mouse = document.querySelector('[posX = "' + mouseCoondinates[0] + '"][posY = "' + mouseCoondinates[1] + '"]');
+    let mouseCoordinates = generatesMouse();
+    console.log(mouseCoordinates);
+    mouse = document.querySelector('[posX = "' + mouseCoordinates[0] + '"][posY = "' + mouseCoordinates[1] + '"]');
 
     while (mouse.classList.contains('snakeBody')) {
-        let mouseCoondinates = generatesMouse();
-        mouse = document.querySelector('[posX = "' + mouseCoondinates[0] + '"][posY = "' + mouseCoondinates[1] + '"]');
+        let mouseCoordinates = generatesMouse();
+        mouse = document.querySelector('[posX = "' + mouseCoordinates[0] + '"][posY = "' + mouseCoordinates[1] + '"]');
     }
 
     mouse.classList.add('mouse');
@@ -71,7 +71,7 @@ font-size:30px;
 display:block;
 `;
 let score = 0;
-input.value = `Ваши очки ${score}`;
+input.value = `Ваш рахунок ${score}`;
 
 function move() {
     let snakeCoordinates = [snakeBody[0].getAttribute('posX'), snakeBody[0].getAttribute('posY')];
@@ -80,48 +80,53 @@ function move() {
     snakeBody.pop();
 
 
-    if (direction == 'right') {
+    if (direction === 'right') {
         if (snakeCoordinates[0] < 10) {
-            snakeBody.unshift(document.querySelector('[posX = "' + (+snakeCoordinates[0] + 1) + '"][posY = "' + snakeCoordinates[1] + '"]'));
+            snakeBody.unshift(document.querySelector('[posX = "' + (+snakeCoordinates[0] + 1) + '"][posY = "' +
+                snakeCoordinates[1] + '"]'));
         } else {
             snakeBody.unshift(document.querySelector('[posX = "1"][posY = "' + snakeCoordinates[1] + '"]'));
         }
     }
-    if (direction == 'left') {
+    if (direction === 'left') {
         if (snakeCoordinates[0] > 1) {
-            snakeBody.unshift(document.querySelector('[posX = "' + (+snakeCoordinates[0] - 1) + '"][posY = "' + snakeCoordinates[1] + '"]'));
+            snakeBody.unshift(document.querySelector('[posX = "' + (+snakeCoordinates[0] - 1) + '"][posY = "' +
+                snakeCoordinates[1] + '"]'));
         } else {
             snakeBody.unshift(document.querySelector('[posX = "10"][posY = "' + snakeCoordinates[1] + '"]'));
         }
     }
-    if (direction == 'up') {
+    if (direction === 'up') {
         if (snakeCoordinates[1] < 10) {
-            snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "' + (+snakeCoordinates[1] + 1) + '"]'));
+            snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "' +
+                (+snakeCoordinates[1] + 1) + '"]'));
         } else {
             snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "1"]'));
         }
     }
-    if (direction == 'down') {
+    if (direction === 'down') {
         if (snakeCoordinates[1] > 1) {
-            snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "' + (+snakeCoordinates[1] - 1) + '"]'));
+            snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "' +
+                (+snakeCoordinates[1] - 1) + '"]'));
         } else {
             snakeBody.unshift(document.querySelector('[posX = "' + snakeCoordinates[0] + '"][posY = "10"]'));
         }
     }
 
-    if (snakeBody[0].getAttribute('posX') == mouse.getAttribute('posX') && snakeBody[0].getAttribute('posY') == mouse.getAttribute('posY')) {
+    if (snakeBody[0].getAttribute('posX') === mouse.getAttribute('posX') &&
+        snakeBody[0].getAttribute('posY') === mouse.getAttribute('posY')) {
         mouse.classList.remove('mouse');
         let a = snakeBody[snakeBody.length - 1].getAttribute('posX');
         let b = snakeBody[snakeBody.length - 1].getAttribute('posY');
-        snakeBody.push(document.querySelector('[posX="' + a + '"][posY="' + a + '"]'));
+        snakeBody.push(document.querySelector('[posX="' + a + '"][posY="' + b + '"]'));
         createMouse();
         score++;
-        input.value = `Ваши очки ${score}`;
+        input.value = `Ваш рахунок ${score}`;
     }
 
     if (snakeBody[0].classList.contains('snakeBody')) {
         setTimeout(() => {
-            alert(`Игра окончена. Ваши очки ${score}`);
+            alert(`Гра завершена. Ваш рахунок ${score}`);
         }, 200);
         clearInterval(interval);
         snakeBody[0].style.background = 'rgb(255, 0, 0)';
@@ -137,20 +142,20 @@ function move() {
 let interval = setInterval(move, 300);
 
 window.addEventListener('keydown', function (e) {
-    if (steps == true) {
-        if (e.keyCode == 37 && direction != 'right') {
+    if (steps === true) {
+        if (e.key.toLowerCase() === 'a' && direction !== 'right') {
             direction = 'left';
             steps = false;
         }
-        if (e.keyCode == 38 && direction != 'down') {
+        if (e.key.toLowerCase()  === 'w' && direction !== 'down') {
             direction = 'up';
             steps = false;
         }
-        if (e.keyCode == 39 && direction != 'left') {
+        if (e.key.toLowerCase()  === 'd' && direction !== 'left') {
             direction = 'right';
             steps = false;
         }
-        if (e.keyCode == 40 && direction != 'up') {
+        if (e.key.toLowerCase() === 's' && direction !== 'up') {
             direction = 'down';
             steps = false;
         }
