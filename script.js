@@ -30,8 +30,8 @@ function generatesSnake() {
 
 let coordinates = generatesSnake();
 let snakeBody = [document.querySelector('[posX = "' + coordinates[0] + '"][posY = "' + coordinates[1] + '"]'),
-document.querySelector('[posX = "' + (coordinates[0] - 1) + '"][posY = "' + coordinates[1] + '"]'),
-document.querySelector('[posX = "' + (coordinates[0] - 2) + '"][posY = "' + coordinates[1] + '"]')];
+    document.querySelector('[posX = "' + (coordinates[0] - 1) + '"][posY = "' + coordinates[1] + '"]'),
+    document.querySelector('[posX = "' + (coordinates[0] - 2) + '"][posY = "' + coordinates[1] + '"]')];
 
 for (let i = 0; i < snakeBody.length; i++) {
     snakeBody[i].classList.add('snakeBody');
@@ -46,8 +46,8 @@ function createMouse() {
         let posY = Math.round(Math.random() * (10 - 1) + 1);
         return [posX, posY];
     }
+
     let mouseCoordinates = generatesMouse();
-    console.log(mouseCoordinates);
     mouse = document.querySelector('[posX = "' + mouseCoordinates[0] + '"][posY = "' + mouseCoordinates[1] + '"]');
 
     while (mouse.classList.contains('snakeBody')) {
@@ -57,6 +57,7 @@ function createMouse() {
 
     mouse.classList.add('mouse');
 }
+
 createMouse();
 
 let direction = 'right';
@@ -70,6 +71,7 @@ margin-top:40px;
 font-size:30px;
 display:block;
 `;
+input.setAttribute("readonly", "readonly");
 let score = 0;
 input.value = `Ваш рахунок ${score}`;
 
@@ -78,7 +80,6 @@ function move() {
     snakeBody[0].classList.remove('head');
     snakeBody[snakeBody.length - 1].classList.remove('snakeBody');
     snakeBody.pop();
-
 
     if (direction === 'right') {
         if (snakeCoordinates[0] < 10) {
@@ -139,7 +140,8 @@ function move() {
 
     steps = true;
 }
-let interval = setInterval(move, 300);
+
+let interval = setInterval(move, 250);
 
 window.addEventListener('keydown', function (e) {
     if (steps === true) {
@@ -147,11 +149,11 @@ window.addEventListener('keydown', function (e) {
             direction = 'left';
             steps = false;
         }
-        if (e.key.toLowerCase()  === 'w' && direction !== 'down') {
+        if (e.key.toLowerCase() === 'w' && direction !== 'down') {
             direction = 'up';
             steps = false;
         }
-        if (e.key.toLowerCase()  === 'd' && direction !== 'left') {
+        if (e.key.toLowerCase() === 'd' && direction !== 'left') {
             direction = 'right';
             steps = false;
         }
